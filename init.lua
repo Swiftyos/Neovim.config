@@ -447,6 +447,22 @@ require('lazy').setup({
       'hrsh7th/nvim-cmp',
       'L3MON4D3/LuaSnip',
       'saadparwaiz1/cmp_luasnip',
+      {
+        'simrat39/rust-tools.nvim',
+        opts = {
+          tools = {
+            runnables = {
+              use_telescope = true,
+            },
+            inlay_hints = {
+              auto = true,
+              show_parameter_hints = false,
+              parameter_hints_prefix = '',
+              other_hints_prefix = '',
+            },
+          },
+        },
+      },
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
@@ -598,7 +614,11 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         gopls = {},
-        rust_analyzer = {},
+        rust_analyzer = {
+          checkOnSave = {
+            command = 'clippy',
+          },
+        },
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -916,7 +936,7 @@ require('lazy').setup({
   --
   require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  require 'kickstart.plugins.lint',
+  -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps

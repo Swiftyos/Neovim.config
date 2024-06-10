@@ -8,7 +8,6 @@ return {
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
         python = { 'pylint' }, -- Adding Python linter, you could use 'pylint' or 'mypy' instead
-        rust = { 'clippy' }, -- Adding Rust linter, using clippy
       }
       require('lint').linters.pylint.cmd = 'python'
       require('lint').linters.pylint.args = { '-m', 'pylint', '-f', 'json' }
