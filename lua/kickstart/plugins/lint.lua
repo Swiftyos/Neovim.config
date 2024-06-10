@@ -27,7 +27,7 @@ return {
       --   markdown = { "vale" },
       --   rst = { "vale" },
       --   ruby = { "ruby" },
-      --   terraform = { "tflint" },
+      --   terraform { "tflint" },
       --   text = { "vale" }
       -- }
       --
