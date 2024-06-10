@@ -7,8 +7,11 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        python = { 'pylint' }, -- Adding Python linter, you could use 'pylint' or 'mypy' instead
+        rust = { 'clippy' }, -- Adding Rust linter, using clippy
       }
-
+      require('lint').linters.pylint.cmd = 'python'
+      require('lint').linters.pylint.args = { '-m', 'pylint', '-f', 'json' }
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
       -- lint.linters_by_ft = lint.linters_by_ft or {}
