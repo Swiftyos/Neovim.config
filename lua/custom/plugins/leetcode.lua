@@ -12,6 +12,7 @@ return {
     'nvim-tree/nvim-web-devicons',
   },
   opts = {
+    lang = 'rust',
     -- configuration goes here
   },
 }
