@@ -20,7 +20,7 @@ return {
       proxy = nil,
     },
     behaviour = {
-      auto_suggestions = true, -- Experimental stage
+      auto_suggestions = false, -- Experimental stage
       auto_set_highlight_group = true,
       auto_set_keymaps = true,
       auto_apply_diff_after_generation = false,
@@ -40,7 +40,10 @@ return {
     --- The below dependencies are optional,
     'echasnovski/mini.pick', -- for file_selector provider mini.pick
     'nvim-telescope/telescope.nvim', -- for file_selector provider telescope
-    'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+    -- For blink cmp users (nvim-cmp alternative), you can use either:
+    -- 'hrsh7th/nvim-cmp', -- autocompletion for avante commands and mentions
+    -- or use blink.compat to emulate nvim-cmp
+    -- or use the dedicated plugin: 'Kaiser-Yang/blink-cmp-avante'
     'ibhagwan/fzf-lua', -- for file_selector provider fzf
     'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
     'zbirenbaum/copilot.lua', -- for providers='copilot'
