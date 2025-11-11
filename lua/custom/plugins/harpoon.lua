@@ -7,7 +7,7 @@ return {
 
     harpoon:setup()
 
-    vim.keymap.set('n', '<leader>a', function()
+    vim.keymap.set('n', '<leader>k', function()
       harpoon:list():add()
     end, { desc = '[a]dd harpoon bookmark' })
 
@@ -27,7 +27,7 @@ return {
     vim.keymap.set('n', '<C-s>', function()
       harpoon:list():select(4)
     end)
-    vim.keymap.set('n', '<leader><C-h>', function()
+    vim.keymap.set('n', '<leader><C-y>', function()
       harpoon:list():replace_at(1)
     end)
     vim.keymap.set('n', '<leader><C-t>', function()
