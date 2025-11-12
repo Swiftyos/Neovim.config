@@ -37,30 +37,37 @@ return {
 
     -- Apply highlights after colorscheme loads
     local function set_bufferline_colors()
-      local bg_inactive = '#1e1e2e' -- Background for inactive buffers
-      local bg_selected = '#313244' -- Background for selected buffer
+      local bg_inactive = '#1e1e2e' -- Inactive buffer background
+      local bg_selected = '#313244' -- Selected buffer background
       local bg_fill = '#181825' -- Background behind all tabs
 
-      -- The key: separator fg should match the bg of the buffer it's attached to
+      -- Main fill (background behind everything)
       vim.api.nvim_set_hl(0, 'BufferLineFill', { bg = bg_fill })
 
-      -- Inactive buffer separators
+      -- Tab backgrounds
+      vim.api.nvim_set_hl(0, 'BufferLineBackground', { bg = bg_inactive })
+      vim.api.nvim_set_hl(0, 'BufferLineBufferSelected', { bg = bg_selected, bold = true })
+      vim.api.nvim_set_hl(0, 'BufferLineBufferVisible', { bg = bg_inactive })
+
+      -- Separators (slants)
       vim.api.nvim_set_hl(0, 'BufferLineSeparator', {
-        fg = bg_inactive, -- Match inactive buffer bg
+        fg = bg_inactive,
         bg = bg_fill,
       })
-
-      -- Selected buffer separators
       vim.api.nvim_set_hl(0, 'BufferLineSeparatorSelected', {
-        fg = bg_selected, -- Match selected buffer bg
+        fg = bg_selected,
         bg = bg_fill,
       })
-
-      -- Visible buffer separators (when you have splits)
       vim.api.nvim_set_hl(0, 'BufferLineSeparatorVisible', {
         fg = bg_inactive,
         bg = bg_fill,
       })
+
+      -- Tab area (the group indicators on the right)
+      vim.api.nvim_set_hl(0, 'BufferLineTab', { bg = bg_fill })
+      vim.api.nvim_set_hl(0, 'BufferLineTabSelected', { bg = bg_fill })
+      vim.api.nvim_set_hl(0, 'BufferLineTabSeparator', { fg = bg_fill, bg = bg_fill })
+      vim.api.nvim_set_hl(0, 'BufferLineTabSeparatorSelected', { fg = bg_fill, bg = bg_fill })
     end
 
     -- Set colors now
