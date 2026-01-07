@@ -11,6 +11,7 @@ return {
     notifier = { enabled = true },
     quickfile = { enabled = true },
     scroll = { enabled = true },
+    terminal = { enabled = true },
     words = { enabled = true },
   },
   keys = {
@@ -34,6 +35,19 @@ return {
         require('snacks').lazygit.log_file()
       end,
       desc = 'Lazygit Current File History',
+    },
+    {
+      '<C-/>',
+      function()
+        require('snacks').terminal()
+      end,
+      desc = 'Toggle Terminal',
+    },
+    {
+      '<C-/>',
+      '<cmd>close<cr>',
+      mode = 't',
+      desc = 'Close Terminal',
     },
   },
 }
