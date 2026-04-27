@@ -19,7 +19,7 @@ return {
       zen_mode_active = not zen_mode_active
 
       -- Set window options when Zen mode is toggled
-      vim.wo.wrap = false
+      vim.wo.wrap = true
       vim.wo.number = true
       vim.wo.rnu = true
     end)

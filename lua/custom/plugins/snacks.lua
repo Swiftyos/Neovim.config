@@ -37,14 +37,14 @@ return {
       desc = 'Lazygit Current File History',
     },
     {
-      '<C-/>',
+      '<leader>mo',
       function()
         require('snacks').terminal()
       end,
       desc = 'Toggle Terminal',
     },
     {
-      '<C-/>',
+      '<leader>mc',
       '<cmd>close<cr>',
       mode = 't',
       desc = 'Close Terminal',

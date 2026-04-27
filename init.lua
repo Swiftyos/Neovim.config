@@ -189,6 +189,13 @@ vim.keymap.set('n', '<leader>Y', [["+Y]])
 
 vim.keymap.set({ 'n', 'v' }, '<leader>d', [["_d]])
 
+vim.api.nvim_create_user_command('Cppath', function()
+  local path = vim.fn.fnamemodify(vim.fn.expand '%:p', ':~:.')
+  vim.fn.setreg('+', path)
+  Snacks.notify('Copied "' .. path .. '" to the clipboard!', { title = 'File Path Copied' })
+end, {})
+vim.keymap.set('n', '<leader>cp', '<cmd>Cppath<CR>', { desc = '[C]opy file [P]ath' })
+
 -- Clear highlights on search when pressing <Esc> in normal modeinit.lu
 --  See `:help hlsearch`
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -982,34 +989,54 @@ require('lazy').setup({
     end,
   },
   { -- Highlight, edit, and navigate code
+    -- The `master` branch was archived May 2025 and is incompatible with
+    -- Neovim 0.12+. The `main` branch is the new active branch with a
+    -- simpler API: `install` parsers, then enable highlight/indent via
+    -- autocmds against the core `vim.treesitter` runtime.
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    opts = {
-      ensure_installed = {
+    lazy = false,
+    config = function()
+      local ensure_installed = {
         'bash', 'c', 'cpp', 'diff', 'html', 'css', 'lua', 'luadoc',
         'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc',
         'rust', 'python', 'go', 'ruby',
         'javascript', 'typescript', 'tsx', 'json', 'yaml', 'sql',
-      },
-      -- Autoinstall languages that are not installed
-      auto_install = true,
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'markdown', 'ruby' },
-      },
-      indent = { enable = true, disable = { 'ruby' } },
-    },
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      }
+
+      local ts = require('nvim-treesitter')
+      ts.install(ensure_installed)
+
+      -- Auto-install missing parsers when a filetype is opened.
+      local installed = {}
+      for _, lang in ipairs(ts.get_installed()) do
+        installed[lang] = true
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        callback = function(args)
+          local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+          if not lang then return end
+
+          if not installed[lang] then
+            local ok = pcall(ts.install, { lang })
+            if ok then installed[lang] = true end
+          end
+
+          -- Some filetypes still need vim regex highlighting (e.g. ruby).
+          local skip_highlight = { ruby = true }
+          if not skip_highlight[lang] then
+            pcall(vim.treesitter.start, args.buf, lang)
+          end
+
+          -- Indent via the new module (opt-in per buffer).
+          if lang ~= 'ruby' then
+            vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
